@@ -17,7 +17,7 @@ public class ApiManager {
 
     private static DiyCodeApi mDiyCodeApi;
 
-    private static DiyCodeApi getDiyCodeApi() {
+    public static DiyCodeApi getDiyCodeApi() {
         initDiyCodeApi();
         return mDiyCodeApi;
     }

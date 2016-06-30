@@ -2,6 +2,7 @@ package me.ewriter.dc4android.apis;
 
 import me.ewriter.dc4android.models.AccessToken;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -23,13 +24,13 @@ public interface DiyCodeApi {
      * @param redirect_uri 申请时填写的跳转url
      * @param client_id
      * @param client_secret
-     * @param call
+     * @return
      */
     @FormUrlEncoded
     @POST("oauth/token")
-    public void auth(@Field("code") String code, @Field("grant_type") String grantType,
+    public Call<AccessToken> auth(@Field("code") String code, @Field("grant_type") String grantType,
             @Field("redirect_uri") String redirect_uri, @Field("client_id") String client_id,
-            @Field("client_secret") String client_secret, Call<AccessToken> call);
+            @Field("client_secret") String client_secret);
 
     /**
      * 用于验证返回的accesstoken是否正确
@@ -37,7 +38,7 @@ public interface DiyCodeApi {
      * @return
      */
     @GET("/api/v3/hello.json")
-    Call<AccessToken> getHelloEntity(@Query("access_token") String access_token);
+    public Call<AccessToken> getHelloEntity(@Query("access_token") String access_token);
 
 
     /**
@@ -46,40 +47,36 @@ public interface DiyCodeApi {
      * 让服务器知道这个设备还活着, Push 会忽略两周未更新的设别
      * @param platform ["ios", "android"]
      * @param token  accesstoken
-     * @param call
+     * @return
      */
     @POST("oauth/devices.json")
-    public void updateDevices(@Query("platform") String platform, @Query("token") String token,
-                              Call<AccessToken> call);
+    public Call<AccessToken> updateDevices(@Query("platform") String platform, @Query("token") String token);
 
     /**
      * 删除 Devices 信息，请注意在用户登出或删除应用的时候调用，以便确保清理掉
      * @param platform ［“ios”， “android”］
      * @param token
-     * @param call
+     * @return
      */
     @DELETE("oauth/deveices.json")
-    public void deleteDevices(@Query("platform") String platform, @Query("token") String token,
-                              Call<AccessToken> call);
+    public Call<AccessToken> deleteDevices(@Query("platform") String platform, @Query("token") String token);
 
     /**
      * 赞了某个主题或某个回复
      * @param obj_type ［“topic”， “reply”］
      * @param obj_id   主题 id 或 用户 id ？
-     * @param call
+     * @return
      */
     @POST("oauth/likes.json")
-    public void likeSomething(@Query("obj_type") String obj_type, @Query("obj_id") int obj_id,
-                              Call<AccessToken> call);
+    public Call<AccessToken> likeSomething(@Query("obj_type") String obj_type, @Query("obj_id") int obj_id);
 
 
     /**
      * 取消点赞
      * @param obj_type  ［“topic”， “reply”］
      * @param obj_id   主题 id 或 用户 id ？
-     * @param call
+     * @return
      */
     @DELETE("oauth/likes.json")
-    public void dislikeSomething(@Query("obj_type") String obj_type, @Query("obj_id") int obj_id,
-                                 Call<AccessToken> call);
+    public Call<AccessToken> dislikeSomething(@Query("obj_type") String obj_type, @Query("obj_id") int obj_id);
 }
